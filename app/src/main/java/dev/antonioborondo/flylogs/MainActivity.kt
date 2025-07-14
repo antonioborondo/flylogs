@@ -1,5 +1,6 @@
 package dev.antonioborondo.flylogs
 
+import android.content.Intent
 import android.os.Bundle
 import android.webkit.WebChromeClient
 import android.webkit.WebView
@@ -17,10 +18,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import dev.antonioborondo.flylogs.ui.theme.FlylogsTheme
 
 class MainActivity : ComponentActivity() {
+
+    private lateinit var webView: WebView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val webView = WebView(this)
+        webView = WebView(this)
         setContentView(webView)
 
         val webSettings = webView.settings
@@ -34,6 +38,13 @@ class MainActivity : ComponentActivity() {
 
         val incomingUrl = intent?.data?.toString() ?: "https://fmc.flylogs.com"
         webView.loadUrl(incomingUrl)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        intent.data?.toString()?.let { newUrl ->
+            webView.loadUrl(newUrl)
+        }
     }
 }
 
