@@ -1,6 +1,9 @@
 package dev.antonioborondo.flylogs
 
 import android.os.Bundle
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,17 +19,21 @@ import dev.antonioborondo.flylogs.ui.theme.FlylogsTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            FlylogsTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
-        }
+
+        val webView = WebView(this)
+        setContentView(webView)
+
+        val webSettings = webView.settings
+        webSettings.domStorageEnabled = true
+        webSettings.javaScriptCanOpenWindowsAutomatically = true
+        webSettings.javaScriptEnabled = true
+        webSettings.setSupportMultipleWindows(true)
+
+        webView.webChromeClient = WebChromeClient()
+        webView.webViewClient = WebViewClient()
+
+        val incomingUrl = intent?.data?.toString() ?: "https://fmc.flylogs.com"
+        webView.loadUrl(incomingUrl)
     }
 }
 
