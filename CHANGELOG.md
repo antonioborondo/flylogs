@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Use `neo.flylogs.com` as the base URL.
+- Name the APK after the app and version.
 
 ### Fixed
 

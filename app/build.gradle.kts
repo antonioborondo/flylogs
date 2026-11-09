@@ -39,6 +39,10 @@ android {
     }
 }
 
+base {
+    archivesName = "flylogs-${android.defaultConfig.versionName}"
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
