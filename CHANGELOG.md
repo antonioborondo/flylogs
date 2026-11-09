@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Use `neo.flylogs.com` as the base URL.
 
+### Fixed
+
+- Open PDFs and other files.
+
 ## [1.0.0] - 2026-11-09
 
 ### Added
