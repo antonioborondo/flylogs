@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
         webView.webChromeClient = WebChromeClient()
         webView.webViewClient = WebViewClient()
 
-        val incomingUrl = intent?.data?.toString() ?: "https://fmc.flylogs.com"
+        val incomingUrl = intent?.data?.toString() ?: "https://neo.flylogs.com"
         webView.loadUrl(incomingUrl)
     }
 
