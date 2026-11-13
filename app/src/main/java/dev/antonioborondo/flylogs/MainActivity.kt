@@ -13,6 +13,7 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +29,12 @@ import dev.antonioborondo.flylogs.ui.theme.FlylogsTheme
 class MainActivity : ComponentActivity() {
 
     private lateinit var webView: WebView
+
+    private val webViewBackCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            webView.goBack()
+        }
+    }
 
     private val downloadManager by lazy { getSystemService(DownloadManager::class.java) }
 
@@ -45,6 +52,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        onBackPressedDispatcher.addCallback(this, webViewBackCallback)
+
         webView = WebView(this)
         setContentView(webView)
 
@@ -54,7 +63,12 @@ class MainActivity : ComponentActivity() {
         webSettings.javaScriptEnabled = true
 
         webView.webChromeClient = WebChromeClient()
-        webView.webViewClient = WebViewClient()
+        webView.webViewClient = object : WebViewClient() {
+            override fun doUpdateVisitedHistory(view: WebView, url: String?, isReload: Boolean) {
+                super.doUpdateVisitedHistory(view, url, isReload)
+                webViewBackCallback.isEnabled = view.canGoBack()
+            }
+        }
         webView.setDownloadListener { url, _, contentDisposition, mimeType, _ ->
             val fileName = URLUtil.guessFileName(url, contentDisposition, mimeType)
             val request = DownloadManager.Request(Uri.parse(url))
